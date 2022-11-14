@@ -354,21 +354,31 @@ void Read_Serial()
           }
         }
       }
-      if (Total_Sampling > 0)
+      if (Data_Rec == "*OK#" && (Total_Sampling > 0))
       {
-        if (Data_Rec == "*OK#")
-        {
-          Total_Run_UART = true;
-        }
-        if (Data_Rec == "*GET#")
-        {
-          Serial.println("*" + String(Total_Sampling) + "#");
-        }
+        Total_Run_UART = true;
       }
-      else
+      if (Data_Rec == "*GET#")
       {
-        Serial.println("*0#");
+        Serial.println("*" + String(Total_Sampling) + "#");
       }
+      if (Data_Rec == "*GET1#")
+      {
+        Serial.println("*" + String(Slot_Sampling[0]) + "#");
+      }
+      if (Data_Rec == "*GET2#")
+      {
+        Serial.println("*" + String(Slot_Sampling[1]) + "#");
+      }
+      if (Data_Rec == "*GET3#")
+      {
+        Serial.println("*" + String(Slot_Sampling[2]) + "#");
+      }
+      if (Data_Rec == "*GET4#")
+      {
+        Serial.println("*" + String(Slot_Sampling[3]) + "#");
+      }
+
       BuzzerBeep(1, 100);
       Data_Rec = "";
       Enable_Rec_Data = false;
@@ -465,7 +475,7 @@ void loop()
 #if DEBUG_SERIAL == ON
     Serial.println("Not enough sampling... " + String(Total_Sampling));
 #endif
-    Beep_Alarm(1, 200, 1000);
+    //Beep_Alarm(1, 200, 1000);
     ON_ALARM;
     Total_Run_UART = false;
     Slot_Run_UART = 0;
